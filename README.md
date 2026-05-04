@@ -1,1 +1,159 @@
-# HTML-
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carwah Instinto</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: black;
+      color: gold;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    /* ✨ ESTRELLAS */
+    body::before {
+      content: "";
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(gold 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.2;
+      animation: estrellas 30s linear infinite;
+    }
+
+    @keyframes estrellas {
+      from { transform: translateY(0); }
+      to { transform: translateY(-200px); }
+    }
+
+    header {
+      padding: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      position: relative;
+      z-index: 1;
+    }
+
+    .glow-text {
+      font-size: 35px;
+      text-shadow: 0 0 10px gold, 0 0 20px gold;
+    }
+
+    .productos, .catalogo {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      background: #111;
+      padding: 15px;
+      border-radius: 10px;
+      width: 220px;
+      box-shadow: 0 0 10px rgba(255,215,0,0.3);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .neon-btn {
+      margin-top: 10px;
+      padding: 10px;
+      background: linear-gradient(45deg, gold, orange);
+      border: none;
+      cursor: pointer;
+      font-weight: BLACK WITH SMALL GOLDEN STARS;
+      border-radius: 8px;
+      box-shadow: 0 0 10px gold;
+    }
+
+    section {
+      margin-top: 60px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  Carwah Instinto 🚗✨
+</header>
+
+<h2 class="glow-text">Elige tu tipo de lavado</h2>
+
+<!-- 🔝 OPCIONES -->
+<div class="productos">
+
+  <div class="card">
+    <img src="https://via.placeholder.com/200">
+    <h3>Lavado Express</h3>
+    <button class="neon-btn" onclick="irA('express')">Ver Express</button>
+  </div>
+
+  <div class="card">
+    <img src="https://via.placeholder.com/200">
+    <h3>Lavado Premium</h3>
+    <button class="neon-btn" onclick="irA('premium')">Ver Premium</button>
+  </div>
+
+</div>
+
+<!-- 🚗 EXPRESS -->
+<section id="express">
+  <h2 class="glow-text">Lavado Express</h2>
+
+  <div class="catalogo">
+    <div class="card">
+      <img src="https://via.placeholder.com/200">
+      <h3>Lavado Rápido</h3>
+      <p>RD$ 500</p>
+      <button class="neon-btn" onclick="comprar('Lavado Express')">Reservar</button>
+    </div>
+  </div>
+</section>
+
+<!-- 💎 PREMIUM -->
+<section id="premium">
+  <h2 class="glow-text">Lavado Premium</h2>
+
+  <div class="catalogo">
+    <div class="card">
+      <img src="https://via.placeholder.com/200">
+      <h3>Lavado Completo</h3>
+      <p>RD$ 1,200</p>
+      <button class="neon-btn" onclick="comprar('Lavado Premium')">Reservar</button>
+    </div>
+
+    <div class="card">
+      <img src="https://via.placeholder.com/200">
+      <h3>Lavado + Cera</h3>
+      <p>RD$ 1,800</p>
+      <button class="neon-btn" onclick="comprar('Lavado + Cera')">Reservar</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  function comprar(servicio) {
+    let mensaje = "Hola, quiero reservar el servicio: " + servicio + " en Carwah Instinto";
+    let url = "https://wa.me/18094385474?text=" + encodeURIComponent(mensaje);
+    window.open(url, "_blank");
+  }
+
+  function irA(seccion) {
+    document.getElementById(seccion).scrollIntoView({ behavior: "smooth" });
+  }
+</script>
+
+</body>
+</html>
