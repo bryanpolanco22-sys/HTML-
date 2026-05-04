@@ -13,6 +13,7 @@
       text-align: center;
     }
 
+    /* 🚗 FONDO */
     body::before {
       content: "";
       position: fixed;
@@ -20,10 +21,12 @@
       height: 100%;
       background: url('https://images.unsplash.com/photo-1607860108855-64acf2078ed9') center/cover no-repeat;
       opacity: 0.15;
+      z-index: 0;
     }
 
     .container {
       position: relative;
+      z-index: 1;
       padding: 15px;
     }
 
@@ -32,7 +35,7 @@
       margin: 15px auto;
       padding: 15px;
       border-radius: 12px;
-      max-width: 320px;
+      max-width: 330px;
       box-shadow: 0 0 10px rgba(255,215,0,0.3);
     }
 
@@ -50,9 +53,8 @@
       cursor: pointer;
     }
 
-    .disabled {
-      background: gray !important;
-      cursor: not-allowed;
+    h2 {
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -61,38 +63,50 @@
 
 <div class="container">
 
-<h2>Carwah Instinto 🚗</h2>
+<h2>Carwah Instinto 🚗✨</h2>
 
-<!-- 📅 FECHA -->
+<!-- 🚗 SERVICIOS -->
 <div class="card">
-  <h3>Selecciona el día</h3>
+  <h3>Lavado Express</h3>
+  <ul style="text-align:left;">
+    <li>Lavado exterior</li>
+    <li>Secado rápido</li>
+    <li>Brillo de gomas</li>
+  </ul>
+  <p>RD$ 500</p>
+  <button onclick="seleccionarServicio('Lavado Express')">Elegir este servicio</button>
+</div>
+
+<div class="card">
+  <h3>Lavado Premium</h3>
+  <ul style="text-align:left;">
+    <li>Lavado completo</li>
+    <li>Limpieza interior</li>
+    <li>Aspirado profundo</li>
+    <li>Cera protectora</li>
+  </ul>
+  <p>RD$ 1,200</p>
+  <button onclick="seleccionarServicio('Lavado Premium')">Elegir este servicio</button>
+</div>
+
+<!-- 📅 AGENDA -->
+<div class="card">
+  <h3>Agendar cita</h3>
+
+  <p id="servicioSeleccionado">Servicio: Ninguno</p>
+
   <button onclick="setFecha(0)" id="hoyBtn"></button>
   <button onclick="setFecha(1)" id="mananaBtn"></button>
-</div>
 
-<!-- 🚗 SERVICIO -->
-<div class="card">
-  <h3>Servicio</h3>
-  <select id="servicio">
-    <option>Lavado Express</option>
-    <option>Lavado Premium</option>
-  </select>
-</div>
-
-<!-- ⏰ HORA -->
-<div class="card">
-  <h3>Hora disponible</h3>
   <select id="hora"></select>
-</div>
 
-<!-- 📲 BOTÓN -->
-<div class="card">
-  <button onclick="reservar()">Agendar cita</button>
+  <button onclick="reservar()">Confirmar cita</button>
 </div>
 
 </div>
 
 <script>
+  let servicio = "";
   let fechaSeleccionada = "";
   let citas = JSON.parse(localStorage.getItem("citas")) || [];
 
@@ -100,6 +114,12 @@
     "9:00 AM","10:00 AM","11:00 AM",
     "1:00 PM","2:00 PM","3:00 PM"
   ];
+
+  function seleccionarServicio(s) {
+    servicio = s;
+    document.getElementById("servicioSeleccionado").innerText = "Servicio: " + s;
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  }
 
   function generarFechas() {
     let hoy = new Date();
@@ -117,7 +137,6 @@
     let fecha = new Date();
     fecha.setDate(fecha.getDate() + dias);
     fechaSeleccionada = fecha.toISOString().split("T")[0];
-
     actualizarHoras();
   }
 
@@ -137,27 +156,30 @@
 
     if (select.options.length === 0) {
       let option = document.createElement("option");
-      option.text = "No hay horarios disponibles";
+      option.text = "No disponible";
       select.add(option);
     }
   }
 
   function reservar() {
-    let servicio = document.getElementById("servicio").value;
     let hora = document.getElementById("hora").value;
+
+    if (!servicio) {
+      alert("Selecciona un servicio primero");
+      return;
+    }
 
     if (!fechaSeleccionada) {
       alert("Selecciona una fecha");
       return;
     }
 
-    if (hora === "No hay horarios disponibles") {
+    if (hora === "No disponible") {
       alert("Ese día está lleno");
       return;
     }
 
     let clave = fechaSeleccionada + "-" + hora;
-
     citas.push(clave);
     localStorage.setItem("citas", JSON.stringify(citas));
 
