@@ -19,10 +19,10 @@
       position: fixed;
       width: 100%;
       height: 100%;
-      background-image: radial-gradient(gold 1px, transparent 1px);
-      background-size: 40px 40px;
-      opacity: 0.2;
-      animation: estrellas 30s linear infinite;
+      background-image: radial-gradient(gold 2px, transparent 2px);
+      background-size: 65px 65px;
+      opacity: 0.5;
+      animation: estrellas 60s linear infinite;
     }
 
     @keyframes estrellas {
@@ -46,8 +46,8 @@
     .productos, .catalogo {
       display: flex;
       justify-content: center;
-      gap: 20px;
-      padding: 20px;
+      gap: 40px;
+      padding: 40px;
       flex-wrap: wrap;
       position: relative;
       z-index: 1;
@@ -69,16 +69,16 @@
     .neon-btn {
       margin-top: 10px;
       padding: 10px;
-      background: linear-gradient(45deg, gold, orange);
+      background: linear-gradient(75deg, gold, orange);
       border: none;
       cursor: pointer;
-      font-weight: BLACK WITH SMALL GOLDEN STARS;
-      border-radius: 8px;
-      box-shadow: 0 0 10px gold;
+      font-weight: BLACK WITH MEDIUM GOLDEN STARS;
+      border-radius: 20px;
+      box-shadow: 0 0 20px gold;
     }
 
     section {
-      margin-top: 60px;
+      margin-top: 75px;
     }
   </style>
 </head>
@@ -116,8 +116,8 @@
     <div class="card">
       <img src="https://via.placeholder.com/200">
       <h3>Lavado Rápido</h3>
-      <p>RD$ 500</p>
-      <button class="neon-btn" onclick="comprar('Lavado Express')">Reservar</button>
+      <p>RD$</p>
+      <button class="neon-btn" onclick="comprar('Lavado Express')">Reservar Espacio</button>
     </div>
   </div>
 </section>
@@ -130,8 +130,8 @@
     <div class="card">
       <img src="https://via.placeholder.com/200">
       <h3>Lavado Completo</h3>
-      <p>RD$ 1,200</p>
-      <button class="neon-btn" onclick="comprar('Lavado Premium')">Reservar</button>
+      <p>RD$</p>
+      <button class="neon-btn" onclick="comprar('Lavado Premium')">Reservar Espacio</button>
     </div>
 
     <div class="card">
