@@ -2,235 +2,177 @@
 <html>
 <head>
   <title>Carwah Instinto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin: 0;
       font-family: Arial;
-      background: black;
       color: gold;
+      background: black;
       text-align: center;
-      overflow-x: hidden;
     }
 
-    /* ✨ ESTRELLAS */
     body::before {
       content: "";
       position: fixed;
       width: 100%;
       height: 100%;
-      background-image: radial-gradient(gold 1px, transparent 1px);
-      background-size: 40px 40px;
-      opacity: 0.2;
-      animation: estrellas 30s linear infinite;
+      background: url('https://images.unsplash.com/photo-1607860108855-64acf2078ed9') center/cover no-repeat;
+      opacity: 0.15;
     }
 
-    @keyframes estrellas {
-      from { transform: translateY(0); }
-      to { transform: translateY(-200px); }
-    }
-
-    header {
-      padding: 20px;
-      font-size: 28px;
-      font-weight: bold;
+    .container {
       position: relative;
-      z-index: 1;
-    }
-
-    .glow-text {
-      font-size: 30px;
-      text-shadow: 0 0 10px gold, 0 0 20px gold;
-    }
-
-    .productos, .catalogo {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px;
-      flex-wrap: wrap;
-      position: relative;
-      z-index: 1;
+      padding: 15px;
     }
 
     .card {
-      background: #111;
+      background: rgba(0,0,0,0.8);
+      margin: 15px auto;
       padding: 15px;
-      border-radius: 10px;
-      width: 220px;
+      border-radius: 12px;
+      max-width: 320px;
       box-shadow: 0 0 10px rgba(255,215,0,0.3);
     }
 
-    .card img {
+    button, select {
       width: 100%;
-      border-radius: 10px;
-    }
-
-    .neon-btn {
+      padding: 12px;
       margin-top: 10px;
-      padding: 10px;
-      background: linear-gradient(45deg, gold, orange);
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
       border-radius: 8px;
-      box-shadow: 0 0 10px gold;
-    }
-
-    section {
-      margin-top: 60px;
-    }
-
-    /* 📅 AGENDA */
-    .agenda {
-      background: #111;
-      padding: 20px;
-      border-radius: 10px;
-      width: 300px;
-      margin: 30px auto;
-      box-shadow: 0 0 10px gold;
-    }
-
-    input, select {
-      width: 90%;
-      padding: 10px;
-      margin: 10px 0;
       border: none;
-      border-radius: 5px;
+    }
+
+    button {
+      background: linear-gradient(45deg, gold, orange);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .disabled {
+      background: gray !important;
+      cursor: not-allowed;
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  Carwah Instinto 🚗✨
-</header>
+<div class="container">
 
-<h2 class="glow-text">Elige tu servicio</h2>
+<h2>Carwah Instinto 🚗</h2>
 
-<!-- 🔝 SERVICIOS -->
-<div class="productos">
+<!-- 📅 FECHA -->
+<div class="card">
+  <h3>Selecciona el día</h3>
+  <button onclick="setFecha(0)" id="hoyBtn"></button>
+  <button onclick="setFecha(1)" id="mananaBtn"></button>
+</div>
 
-  <div class="card">
-    <img src="https://via.placeholder.com/200">
-    <h3>Lavado Express</h3>
-    <button class="neon-btn" onclick="irA('express')">Ver detalles</button>
-  </div>
+<!-- 🚗 SERVICIO -->
+<div class="card">
+  <h3>Servicio</h3>
+  <select id="servicio">
+    <option>Lavado Express</option>
+    <option>Lavado Premium</option>
+  </select>
+</div>
 
-  <div class="card">
-    <img src="https://via.placeholder.com/200">
-    <h3>Lavado Premium</h3>
-    <button class="neon-btn" onclick="irA('premium')">Ver detalles</button>
-  </div>
+<!-- ⏰ HORA -->
+<div class="card">
+  <h3>Hora disponible</h3>
+  <select id="hora"></select>
+</div>
+
+<!-- 📲 BOTÓN -->
+<div class="card">
+  <button onclick="reservar()">Agendar cita</button>
+</div>
 
 </div>
 
-<!-- 🚗 EXPRESS -->
-<section id="express">
-  <h2 class="glow-text">Lavado Express</h2>
-
-  <div class="catalogo">
-    <div class="card">
-      <h3>Incluye:</h3>
-      <ul style="text-align:left;">
-        <li>Lavado exterior</li>
-        <li>Secado rápido</li>
-        <li>Brillo de gomas</li>
-      </ul>
-      <p>RD$ 500</p>
-    </div>
-  </div>
-</section>
-
-<!-- 💎 PREMIUM -->
-<section id="premium">
-  <h2 class="glow-text">Lavado Premium</h2>
-
-  <div class="catalogo">
-    <div class="card">
-      <h3>Incluye:</h3>
-      <ul style="text-align:left;">
-        <li>Lavado completo</li>
-        <li>Limpieza interior</li>
-        <li>Aspirado profundo</li>
-        <li>Cera protectora</li>
-      </ul>
-      <p>RD$ 650</p>
-    </div>
-  </div>
-</section>
-
-<!-- 📅 AGENDA -->
-<section>
-  <h2 class="glow-text">Agenda tu cita</h2>
-
-  <div class="agenda">
-
-    <label>Servicio:</label>
-    <select id="servicio">
-      <option>Lavado Express</option>
-      <option>Lavado Premium</option>
-    </select>
-
-    <label>Fecha:</label>
-    <input type="date" id="fecha">
-
-    <label>Hora:</label>
-    <select id="hora">
-      <option>9:00 AM</option>
-      <option>10:00 AM</option>
-      <option>11:00 AM</option>
-      <option>2:00 PM</option>
-      <option>3:00 PM</option>
-      <option>4:00 PM</option>
-       <option>5:00 PM</option>
-       <option>6:00 PM</option>
-       <option>7:00 PM</option>
-       <option>8:00 PM</option>
-    </select>
-
-    <button class="neon-btn" onclick="reservar()">Reservar</button>
-
-  </div>
-</section>
-
 <script>
+  let fechaSeleccionada = "";
   let citas = JSON.parse(localStorage.getItem("citas")) || [];
+
+  let horasBase = [
+    "9:00 AM","10:00 AM","11:00 AM",
+    "1:00 PM","2:00 PM","3:00 PM"
+  ];
+
+  function generarFechas() {
+    let hoy = new Date();
+    let manana = new Date();
+    manana.setDate(hoy.getDate() + 1);
+
+    document.getElementById("hoyBtn").innerText =
+      "Hoy (" + hoy.toLocaleDateString('es-DO') + ")";
+
+    document.getElementById("mananaBtn").innerText =
+      "Mañana (" + manana.toLocaleDateString('es-DO') + ")";
+  }
+
+  function setFecha(dias) {
+    let fecha = new Date();
+    fecha.setDate(fecha.getDate() + dias);
+    fechaSeleccionada = fecha.toISOString().split("T")[0];
+
+    actualizarHoras();
+  }
+
+  function actualizarHoras() {
+    let select = document.getElementById("hora");
+    select.innerHTML = "";
+
+    horasBase.forEach(hora => {
+      let clave = fechaSeleccionada + "-" + hora;
+
+      if (!citas.includes(clave)) {
+        let option = document.createElement("option");
+        option.text = hora;
+        select.add(option);
+      }
+    });
+
+    if (select.options.length === 0) {
+      let option = document.createElement("option");
+      option.text = "No hay horarios disponibles";
+      select.add(option);
+    }
+  }
 
   function reservar() {
     let servicio = document.getElementById("servicio").value;
-    let fecha = document.getElementById("fecha").value;
     let hora = document.getElementById("hora").value;
 
-    if (!fecha) {
+    if (!fechaSeleccionada) {
       alert("Selecciona una fecha");
       return;
     }
 
-    let clave = fecha + "-" + hora;
-
-    if (citas.includes(clave)) {
-      alert("Ese horario ya está ocupado");
+    if (hora === "No hay horarios disponibles") {
+      alert("Ese día está lleno");
       return;
     }
+
+    let clave = fechaSeleccionada + "-" + hora;
 
     citas.push(clave);
     localStorage.setItem("citas", JSON.stringify(citas));
 
     let mensaje = "Hola, quiero agendar:\n" +
-                  "Servicio: " + servicio + "\n" +
-                  "Fecha: " + fecha + "\n" +
-                  "Hora: " + hora;
+      "Servicio: " + servicio + "\n" +
+      "Fecha: " + fechaSeleccionada + "\n" +
+      "Hora: " + hora;
 
     let url = "https://wa.me/18094385474?text=" + encodeURIComponent(mensaje);
-
     window.open(url, "_blank");
+
+    actualizarHoras();
   }
 
-  function irA(seccion) {
-    document.getElementById(seccion).scrollIntoView({ behavior: "smooth" });
-  }
+  generarFechas();
 </script>
 
 </body>
