@@ -17,37 +17,37 @@
     body::before {
       content: "";
       position: fixed;
-      width: 60%;
-      height: 60%;
-      background-image: radial-gradient(gold 2px, transparent 2px);
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(gold 1px, transparent 1px);
       background-size: 40px 40px;
-      opacity: 0.5;
-      animation: estrellas 60s linear infinite;
+      opacity: 0.2;
+      animation: estrellas 30s linear infinite;
     }
 
     @keyframes estrellas {
       from { transform: translateY(0); }
-      to { transform: translateY(-400px); }
+      to { transform: translateY(-200px); }
     }
 
     header {
-      padding: 10px;
-      font-size: 15px;
+      padding: 20px;
+      font-size: 28px;
       font-weight: bold;
       position: relative;
       z-index: 1;
     }
 
     .glow-text {
-      font-size: 10px;
+      font-size: 30px;
       text-shadow: 0 0 10px gold, 0 0 20px gold;
     }
 
     .productos, .catalogo {
       display: flex;
       justify-content: center;
-      gap: 40px;
-      padding: 40px;
+      gap: 20px;
+      padding: 20px;
       flex-wrap: wrap;
       position: relative;
       z-index: 1;
@@ -57,28 +57,46 @@
       background: #111;
       padding: 15px;
       border-radius: 10px;
-      width: 200px;
-      box-shadow: 0 0 10px rgba(210,215,0,0.3);
+      width: 220px;
+      box-shadow: 0 0 10px rgba(255,215,0,0.3);
     }
 
     .card img {
-      width: 60%;
+      width: 100%;
       border-radius: 10px;
     }
 
     .neon-btn {
       margin-top: 10px;
       padding: 10px;
-      background: linear-gradient(75deg, gold, orange);
+      background: linear-gradient(45deg, gold, orange);
       border: none;
       cursor: pointer;
-      font-weight: BLACK WITH MEDIUM GOLDEN STARS;
-      border-radius: 10px;
+      font-weight: bold;
+      border-radius: 8px;
       box-shadow: 0 0 10px gold;
     }
 
     section {
-      margin-top: 80px;
+      margin-top: 60px;
+    }
+
+    /* 📅 AGENDA */
+    .agenda {
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      margin: 30px auto;
+      box-shadow: 0 0 10px gold;
+    }
+
+    input, select {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
     }
   </style>
 </head>
@@ -89,21 +107,21 @@
   Carwah Instinto 🚗✨
 </header>
 
-<h2 class="glow-text">Elige tu tipo de lavado</h2>
+<h2 class="glow-text">Elige tu servicio</h2>
 
-<!-- 🔝 OPCIONES -->
+<!-- 🔝 SERVICIOS -->
 <div class="productos">
 
   <div class="card">
     <img src="https://via.placeholder.com/200">
     <h3>Lavado Express</h3>
-    <button class="neon-btn" onclick="irA('express')">Ver Express</button>
+    <button class="neon-btn" onclick="irA('express')">Ver detalles</button>
   </div>
 
   <div class="card">
     <img src="https://via.placeholder.com/200">
     <h3>Lavado Premium</h3>
-    <button class="neon-btn" onclick="irA('premium')">Ver Premium</button>
+    <button class="neon-btn" onclick="irA('premium')">Ver detalles</button>
   </div>
 
 </div>
@@ -114,9 +132,13 @@
 
   <div class="catalogo">
     <div class="card">
-      <img src="https://via.placeholder.com/200">
-      <h3>Lavado Rápido</h3>
-      <button class="neon-btn" onclick="comprar('Lavado Express')">Reservar Espacio</button>
+      <h3>Incluye:</h3>
+      <ul style="text-align:left;">
+        <li>Lavado exterior</li>
+        <li>Secado rápido</li>
+        <li>Brillo de gomas</li>
+      </ul>
+      <p>RD$ 500</p>
     </div>
   </div>
 </section>
@@ -127,23 +149,82 @@
 
   <div class="catalogo">
     <div class="card">
-      <img src="https://via.placeholder.com/200">
-      <h3>Lavado Completo</h3>
-      <button class="neon-btn" onclick="comprar('Lavado Premium')">Reservar Espacio</button>
-    </div>
-
-    <div class="card">
-      <img src="https://via.placeholder.com/200">
-      <h3>Lavado + Cera</h3>
-      <button class="neon-btn" onclick="comprar('Lavado + Cera')">Reservar</button>
+      <h3>Incluye:</h3>
+      <ul style="text-align:left;">
+        <li>Lavado completo</li>
+        <li>Limpieza interior</li>
+        <li>Aspirado profundo</li>
+        <li>Cera protectora</li>
+      </ul>
+      <p>RD$ 650</p>
     </div>
   </div>
 </section>
 
+<!-- 📅 AGENDA -->
+<section>
+  <h2 class="glow-text">Agenda tu cita</h2>
+
+  <div class="agenda">
+
+    <label>Servicio:</label>
+    <select id="servicio">
+      <option>Lavado Express</option>
+      <option>Lavado Premium</option>
+    </select>
+
+    <label>Fecha:</label>
+    <input type="date" id="fecha">
+
+    <label>Hora:</label>
+    <select id="hora">
+      <option>9:00 AM</option>
+      <option>10:00 AM</option>
+      <option>11:00 AM</option>
+      <option>2:00 PM</option>
+      <option>3:00 PM</option>
+      <option>4:00 PM</option>
+       <option>5:00 PM</option>
+       <option>6:00 PM</option>
+       <option>7:00 PM</option>
+       <option>8:00 PM</option>
+    </select>
+
+    <button class="neon-btn" onclick="reservar()">Reservar</button>
+
+  </div>
+</section>
+
 <script>
-  function comprar(servicio) {
-    let mensaje = "Hola, quiero reservar el servicio: " + servicio + " en Carwah Instinto";
+  let citas = JSON.parse(localStorage.getItem("citas")) || [];
+
+  function reservar() {
+    let servicio = document.getElementById("servicio").value;
+    let fecha = document.getElementById("fecha").value;
+    let hora = document.getElementById("hora").value;
+
+    if (!fecha) {
+      alert("Selecciona una fecha");
+      return;
+    }
+
+    let clave = fecha + "-" + hora;
+
+    if (citas.includes(clave)) {
+      alert("Ese horario ya está ocupado");
+      return;
+    }
+
+    citas.push(clave);
+    localStorage.setItem("citas", JSON.stringify(citas));
+
+    let mensaje = "Hola, quiero agendar:\n" +
+                  "Servicio: " + servicio + "\n" +
+                  "Fecha: " + fecha + "\n" +
+                  "Hora: " + hora;
+
     let url = "https://wa.me/18094385474?text=" + encodeURIComponent(mensaje);
+
     window.open(url, "_blank");
   }
 
