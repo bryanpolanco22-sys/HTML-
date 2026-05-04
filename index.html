@@ -17,29 +17,29 @@
     body::before {
       content: "";
       position: fixed;
-      width: 100%;
-      height: 100%;
+      width: 60%;
+      height: 60%;
       background-image: radial-gradient(gold 2px, transparent 2px);
-      background-size: 65px 65px;
+      background-size: 40px 40px;
       opacity: 0.5;
       animation: estrellas 60s linear infinite;
     }
 
     @keyframes estrellas {
       from { transform: translateY(0); }
-      to { transform: translateY(-200px); }
+      to { transform: translateY(-400px); }
     }
 
     header {
-      padding: 20px;
-      font-size: 28px;
+      padding: 10px;
+      font-size: 15px;
       font-weight: bold;
       position: relative;
       z-index: 1;
     }
 
     .glow-text {
-      font-size: 35px;
+      font-size: 10px;
       text-shadow: 0 0 10px gold, 0 0 20px gold;
     }
 
@@ -57,12 +57,12 @@
       background: #111;
       padding: 15px;
       border-radius: 10px;
-      width: 220px;
-      box-shadow: 0 0 10px rgba(255,215,0,0.3);
+      width: 200px;
+      box-shadow: 0 0 10px rgba(210,215,0,0.3);
     }
 
     .card img {
-      width: 100%;
+      width: 60%;
       border-radius: 10px;
     }
 
@@ -73,12 +73,12 @@
       border: none;
       cursor: pointer;
       font-weight: BLACK WITH MEDIUM GOLDEN STARS;
-      border-radius: 20px;
-      box-shadow: 0 0 20px gold;
+      border-radius: 10px;
+      box-shadow: 0 0 10px gold;
     }
 
     section {
-      margin-top: 75px;
+      margin-top: 80px;
     }
   </style>
 </head>
@@ -116,7 +116,6 @@
     <div class="card">
       <img src="https://via.placeholder.com/200">
       <h3>Lavado Rápido</h3>
-      <p>RD$</p>
       <button class="neon-btn" onclick="comprar('Lavado Express')">Reservar Espacio</button>
     </div>
   </div>
@@ -130,14 +129,12 @@
     <div class="card">
       <img src="https://via.placeholder.com/200">
       <h3>Lavado Completo</h3>
-      <p>RD$</p>
       <button class="neon-btn" onclick="comprar('Lavado Premium')">Reservar Espacio</button>
     </div>
 
     <div class="card">
       <img src="https://via.placeholder.com/200">
       <h3>Lavado + Cera</h3>
-      <p>RD$ 1,800</p>
       <button class="neon-btn" onclick="comprar('Lavado + Cera')">Reservar</button>
     </div>
   </div>
