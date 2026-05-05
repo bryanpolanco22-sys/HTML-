@@ -1,4 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carwah Instinto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: black;
+      color: gold;
+      text-align: center;
+    }
+
+    /* ✨ ESTRELLAS */
+    body::before {
+      content: "";
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(gold 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.2;
+      animation: estrellas 30s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes estrellas {
+      from { transform: translateY(0); }
+      to { transform: translateY(-200px); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 15px;
+    }
+
+    .card {
+      background: #111;
+      padding: 15px;
+      margin: 15px auto;
+      border-radius: 12px;
+      max-width: 330px;
+      box-shadow: 0 0 10px rgba(255,215,0,0.3);
+    }
+
+    button, select, input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      background: linear-gradient(45deg, gold, orange);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Carwah Instinto 🚗✨</h2>
+
+<!-- 🚗 SERVICIOS -->
+<div class="card">
+  <h3>Lavado Express</h3>
+  <p>Rápido y eficiente</p>
+  <button onclick="verServicio('express')">Ver detalles</button>
+</div>
+
+<div class="card">
+  <h3>Lavado Premium</h3>
+  <p>Completo y detallado</p>
+  <button onclick="verServicio('premium')">Ver detalles</button>
+</div>
+
+<!-- 📋 DETALLE -->
+<div id="detalle" class="card hidden"></div>
+
+<!-- 📅 AGENDA -->
+<div id="agenda" class="card hidden">
+
+  <h3 id="tituloServicio"></h3>
+
+  <input type="text" id="nombre" placeholder="Tu nombre">
+
+  <select id="vehiculo" onchange="actualizarPrecio()">
+    <option value="">Tipo de vehículo</option>
+    <option>Sedán</option>
+    <option>SUV / Jeepeta</option>
+    <option>Camioneta</option>
+  </select>
+
+  <p id="precioMostrado">Precio: RD$ --</p>
+
+  <button onclick="setFecha(0)" id="hoyBtn"></button>
+  <button onclick="setFecha(1)" id="mananaBtn"></button>
+
+  <select id="hora"></select>
+
+  <button onclick="reservar()">Confirmar cita</button>
+
+</div>
+
+</div>
+
 <script>
+let servicio = "";
+let fechaSeleccionada = "";
+let citas = JSON.parse(localStorage.getItem("citas")) || [];
+
+// 💰 PRECIOS
+let precios = {
+  "Lavado Express": {
+    "Sedán": 500,
+    "SUV / Jeepeta": 700,
+    "Camioneta": 800
+  },
+  "Lavado Premium": {
+    "Sedán": 1200,
+    "SUV / Jeepeta": 1500,
+    "Camioneta": 1700
+  }
+};
+
+let horasBase = [
+  "9:00 AM","10:00 AM","11:00 AM",
+  "1:00 PM","2:00 PM","3:00 PM"
+];
+
+// 🚗 VER SERVICIO
+function verServicio(tipo) {
+  let detalle = document.getElementById("detalle");
+
+  if (tipo === "express") {
+    servicio = "Lavado Express";
+    detalle.innerHTML = `
+      <h3>Lavado Express</h3>
+      <ul style="text-align:left;">
+        <li>Lavado exterior</li>
+        <li>Secado rápido</li>
+        <li>Brillo de gomas</li>
+      </ul>
+      <p>Desde RD$ 500</p>
+      <button onclick="abrirAgenda()">Agendar</button>
+    `;
+  } else {
+    servicio = "Lavado Premium";
+    detalle.innerHTML = `
+      <h3>Lavado Premium</h3>
+      <ul style="text-align:left;">
+        <li>Lavado completo</li>
+        <li>Limpieza interior</li>
+        <li>Aspirado profundo</li>
+        <li>Cera protectora</li>
+      </ul>
+      <p>Desde RD$ 1,200</p>
+      <button onclick="abrirAgenda()">Agendar</button>
+    `;
+  }
+
+  detalle.classList.remove("hidden");
+  actualizarPrecio();
+
+  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+}
+
+// 📅 ABRIR AGENDA
+function abrirAgenda() {
+  document.getElementById("agenda").classList.remove("hidden");
+  document.getElementById("tituloServicio").innerText = servicio;
+  generarFechas();
+}
+
+// 💰 PRECIO DINÁMICO
+function actualizarPrecio() {
+  let vehiculo = document.getElementById("vehiculo").value;
+
+  if (!servicio || !vehiculo) {
+    document.getElementById("precioMostrado").innerText = "Precio: RD$ --";
+    return;
+  }
+
+  let precio = precios[servicio][vehiculo];
+  document.getElementById("precioMostrado").innerText = "Precio: RD$ " + precio;
+}
+
+// 📅 FECHAS
+function generarFechas() {
+  let hoy = new Date();
+  let manana = new Date();
+  manana.setDate(hoy.getDate() + 1);
+
+  document.getElementById("hoyBtn").innerText =
+    "Hoy (" + hoy.toLocaleDateString('es-DO') + ")";
+
+  document.getElementById("mananaBtn").innerText =
+    "Mañana (" + manana.toLocaleDateString('es-DO') + ")";
+}
+
+function setFecha(dias) {
+  let fecha = new Date();
+  fecha.setDate(fecha.getDate() + dias);
+  fechaSeleccionada = fecha.toISOString().split("T")[0];
+  actualizarHoras();
+}
+
+// ⛔ BLOQUEAR HORAS
+function actualizarHoras() {
+  let select = document.getElementById("hora");
+  select.innerHTML = "";
+
+  horasBase.forEach(hora => {
+    let clave = fechaSeleccionada + "-" + hora;
+
+    if (!citas.includes(clave)) {
+      let option = document.createElement("option");
+      option.text = hora;
+      select.add(option);
+    }
+  });
+
+  if (select.options.length === 0) {
+    let option = document.createElement("option");
+    option.text = "No disponible";
+    select.add(option);
+  }
+}
+
+// 📲 RESERVAR
 function reservar() {
   let nombre = document.getElementById("nombre").value;
   let vehiculo = document.getElementById("vehiculo").value;
@@ -10,7 +250,7 @@ function reservar() {
   }
 
   if (!vehiculo) {
-    alert("Selecciona el tipo de vehículo");
+    alert("Selecciona el vehículo");
     return;
   }
 
@@ -28,6 +268,8 @@ function reservar() {
   citas.push(clave);
   localStorage.setItem("citas", JSON.stringify(citas));
 
+  let precio = precios[servicio][vehiculo];
+
   let fechaObj = new Date(fechaSeleccionada);
   let fechaBonita = fechaObj.toLocaleDateString('es-DO', {
     weekday: 'long',
@@ -42,6 +284,8 @@ function reservar() {
 🚘 Vehículo: ${vehiculo}
 
 🧼 Servicio: ${servicio}
+💰 Precio: RD$ ${precio}
+
 📅 Fecha: ${fechaBonita}
 ⏰ Hora: ${hora}
 
@@ -53,3 +297,6 @@ function reservar() {
   actualizarHoras();
 }
 </script>
+
+</body>
+</html>
