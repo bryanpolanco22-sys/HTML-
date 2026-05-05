@@ -1,231 +1,55 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Carwah Instinto</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: black;
-      color: gold;
-      text-align: center;
-    }
-
-    /* 🌌 FONDO */
-    body::before {
-      content: "";
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background-image: radial-gradient(gold 1px, transparent 1px);
-      background-size: 40px 40px;
-      opacity: 0.2;
-      animation: estrellas 30s linear infinite;
-      z-index: 0;
-    }
-
-    @keyframes estrellas {
-      from { transform: translateY(0); }
-      to { transform: translateY(-200px); }
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      padding: 15px;
-    }
-
-    .card {
-      background: #111;
-      padding: 15px;
-      margin: 15px auto;
-      border-radius: 12px;
-      max-width: 330px;
-      box-shadow: 0 0 10px rgba(255,215,0,0.3);
-    }
-
-    button, select {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 8px;
-      border: none;
-    }
-
-    button {
-      background: linear-gradient(45deg, gold, orange);
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    h2 {
-      margin-top: 5px;
-    }
-  </style>
-</head>
-
-<body>
-
-<div class="container">
-
-<h2>Carwah Instinto 🚗✨</h2>
-
-<!-- 🚗 SERVICIOS -->
-<div class="card">
-  <h3>Lavado Express</h3>
-  <p>Rápido y eficiente</p>
-  <button onclick="verServicio('express')">Ver detalles</button>
-</div>
-
-<div class="card">
-  <h3>Lavado Premium</h3>
-  <p>Completo y detallado</p>
-  <button onclick="verServicio('premium')">Ver detalles</button>
-</div>
-
-<!-- 📋 DETALLE -->
-<div id="detalle" class="card hidden"></div>
-
-<!-- 📅 AGENDA -->
-<div id="agenda" class="card hidden">
-
-  <h3 id="tituloServicio"></h3>
-
-  <button onclick="setFecha(0)" id="hoyBtn"></button>
-  <button onclick="setFecha(1)" id="mananaBtn"></button>
-
-  <select id="hora"></select>
-
-  <button onclick="reservar()">Confirmar cita</button>
-
-</div>
-
-</div>
-
 <script>
-  let servicio = "";
-  let fechaSeleccionada = "";
-  let citas = JSON.parse(localStorage.getItem("citas")) || [];
+function reservar() {
+  let nombre = document.getElementById("nombre").value;
+  let vehiculo = document.getElementById("vehiculo").value;
+  let hora = document.getElementById("hora").value;
 
-  let horasBase = [
-    "9:00 AM","10:00 AM","11:00 AM",
-    "1:00 PM","2:00 PM","3:00 PM"
-  ];
-
-  function verServicio(tipo) {
-    let detalle = document.getElementById("detalle");
-
-    if (tipo === "express") {
-      servicio = "Lavado Express";
-      detalle.innerHTML = `
-        <h3>Lavado Express</h3>
-        <ul style="text-align:left;">
-          <li>Lavado exterior</li>
-          <li>Secado rápido</li>
-          <li>Brillo de gomas</li>
-        </ul>
-        <p>RD$ 500</p>
-        <button onclick="abrirAgenda()">Agendar</button>
-      `;
-    } else {
-      servicio = "Lavado Premium";
-      detalle.innerHTML = `
-        <h3>Lavado Premium</h3>
-        <ul style="text-align:left;">
-          <li>Lavado completo</li>
-          <li>Limpieza interior</li>
-          <li>Aspirado profundo</li>
-          <li>Cera protectora</li>
-        </ul>
-        <p>RD$ 1,200</p>
-        <button onclick="abrirAgenda()">Agendar</button>
-      `;
-    }
-
-    detalle.classList.remove("hidden");
-    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  if (!nombre) {
+    alert("Escribe tu nombre");
+    return;
   }
 
-  function abrirAgenda() {
-    document.getElementById("agenda").classList.remove("hidden");
-    document.getElementById("tituloServicio").innerText = servicio;
-    generarFechas();
+  if (!vehiculo) {
+    alert("Selecciona el tipo de vehículo");
+    return;
   }
 
-  function generarFechas() {
-    let hoy = new Date();
-    let manana = new Date();
-    manana.setDate(hoy.getDate() + 1);
-
-    document.getElementById("hoyBtn").innerText =
-      "Hoy (" + hoy.toLocaleDateString('es-DO') + ")";
-
-    document.getElementById("mananaBtn").innerText =
-      "Mañana (" + manana.toLocaleDateString('es-DO') + ")";
+  if (!fechaSeleccionada) {
+    alert("Selecciona una fecha");
+    return;
   }
 
-  function setFecha(dias) {
-    let fecha = new Date();
-    fecha.setDate(fecha.getDate() + dias);
-    fechaSeleccionada = fecha.toISOString().split("T")[0];
-    actualizarHoras();
+  if (hora === "No disponible") {
+    alert("Ese día está lleno");
+    return;
   }
 
-  function actualizarHoras() {
-    let select = document.getElementById("hora");
-    select.innerHTML = "";
+  let clave = fechaSeleccionada + "-" + hora;
+  citas.push(clave);
+  localStorage.setItem("citas", JSON.stringify(citas));
 
-    horasBase.forEach(hora => {
-      let clave = fechaSeleccionada + "-" + hora;
+  let fechaObj = new Date(fechaSeleccionada);
+  let fechaBonita = fechaObj.toLocaleDateString('es-DO', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long'
+  });
 
-      if (!citas.includes(clave)) {
-        let option = document.createElement("option");
-        option.text = hora;
-        select.add(option);
-      }
-    });
+  let mensaje =
+`🚗 *Carwah Instinto*
 
-    if (select.options.length === 0) {
-      let option = document.createElement("option");
-      option.text = "No disponible";
-      select.add(option);
-    }
-  }
+👤 Cliente: ${nombre}
+🚘 Vehículo: ${vehiculo}
 
-  function reservar() {
-    let hora = document.getElementById("hora").value;
+🧼 Servicio: ${servicio}
+📅 Fecha: ${fechaBonita}
+⏰ Hora: ${hora}
 
-    if (!fechaSeleccionada) {
-      alert("Selecciona una fecha");
-      return;
-    }
+📍 Quedo atento a confirmación`;
 
-    if (hora === "No disponible") {
-      alert("Ese día está lleno");
-      return;
-    }
+  let url = "https://wa.me/18094385474?text=" + encodeURIComponent(mensaje);
+  window.open(url, "_blank");
 
-    let clave = fechaSeleccionada + "-" + hora;
-    citas.push(clave);
-    localStorage.setItem("citas", JSON.stringify(citas));
-
-    let mensaje = "Hola, quiero agendar:\n" +
-      "Servicio: " + servicio + "\n" +
-      "Fecha: " + fechaSeleccionada + "\n" +
-      "Hora: " + hora;
-
-    let url = "https://wa.me/18094385474?text=" + encodeURIComponent(mensaje);
-    window.open(url, "_blank");
-
-    actualizarHoras();
-  }
+  actualizarHoras();
+}
 </script>
-
-</body>
-</html>
