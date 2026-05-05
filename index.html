@@ -8,20 +8,27 @@
     body {
       margin: 0;
       font-family: Arial;
-      color: gold;
       background: black;
+      color: gold;
       text-align: center;
     }
 
-    /* 🚗 FONDO */
+    /* 🌌 FONDO */
     body::before {
       content: "";
       position: fixed;
       width: 100%;
       height: 100%;
-      background: url('https://images.unsplash.com/photo-1607860108855-64acf2078ed9') center/cover no-repeat;
-      opacity: 0.15;
+      background-image: radial-gradient(gold 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.2;
+      animation: estrellas 30s linear infinite;
       z-index: 0;
+    }
+
+    @keyframes estrellas {
+      from { transform: translateY(0); }
+      to { transform: translateY(-200px); }
     }
 
     .container {
@@ -31,9 +38,9 @@
     }
 
     .card {
-      background: rgba(0,0,0,0.8);
-      margin: 15px auto;
+      background: #111;
       padding: 15px;
+      margin: 15px auto;
       border-radius: 12px;
       max-width: 330px;
       box-shadow: 0 0 10px rgba(255,215,0,0.3);
@@ -53,6 +60,10 @@
       cursor: pointer;
     }
 
+    .hidden {
+      display: none;
+    }
+
     h2 {
       margin-top: 5px;
     }
@@ -68,32 +79,23 @@
 <!-- 🚗 SERVICIOS -->
 <div class="card">
   <h3>Lavado Express</h3>
-  <ul style="text-align:left;">
-    <li>Lavado exterior</li>
-    <li>Secado rápido</li>
-    <li>Brillo de gomas</li>
-  </ul>
-  <p>RD$ 500</p>
-  <button onclick="seleccionarServicio('Lavado Express')">Elegir este servicio</button>
+  <p>Rápido y eficiente</p>
+  <button onclick="verServicio('express')">Ver detalles</button>
 </div>
 
 <div class="card">
   <h3>Lavado Premium</h3>
-  <ul style="text-align:left;">
-    <li>Lavado completo</li>
-    <li>Limpieza interior</li>
-    <li>Aspirado profundo</li>
-    <li>Cera protectora</li>
-  </ul>
-  <p>RD$ 1,200</p>
-  <button onclick="seleccionarServicio('Lavado Premium')">Elegir este servicio</button>
+  <p>Completo y detallado</p>
+  <button onclick="verServicio('premium')">Ver detalles</button>
 </div>
 
-<!-- 📅 AGENDA -->
-<div class="card">
-  <h3>Agendar cita</h3>
+<!-- 📋 DETALLE -->
+<div id="detalle" class="card hidden"></div>
 
-  <p id="servicioSeleccionado">Servicio: Ninguno</p>
+<!-- 📅 AGENDA -->
+<div id="agenda" class="card hidden">
+
+  <h3 id="tituloServicio"></h3>
 
   <button onclick="setFecha(0)" id="hoyBtn"></button>
   <button onclick="setFecha(1)" id="mananaBtn"></button>
@@ -101,6 +103,7 @@
   <select id="hora"></select>
 
   <button onclick="reservar()">Confirmar cita</button>
+
 </div>
 
 </div>
@@ -115,10 +118,44 @@
     "1:00 PM","2:00 PM","3:00 PM"
   ];
 
-  function seleccionarServicio(s) {
-    servicio = s;
-    document.getElementById("servicioSeleccionado").innerText = "Servicio: " + s;
+  function verServicio(tipo) {
+    let detalle = document.getElementById("detalle");
+
+    if (tipo === "express") {
+      servicio = "Lavado Express";
+      detalle.innerHTML = `
+        <h3>Lavado Express</h3>
+        <ul style="text-align:left;">
+          <li>Lavado exterior</li>
+          <li>Secado rápido</li>
+          <li>Brillo de gomas</li>
+        </ul>
+        <p>RD$ 500</p>
+        <button onclick="abrirAgenda()">Agendar</button>
+      `;
+    } else {
+      servicio = "Lavado Premium";
+      detalle.innerHTML = `
+        <h3>Lavado Premium</h3>
+        <ul style="text-align:left;">
+          <li>Lavado completo</li>
+          <li>Limpieza interior</li>
+          <li>Aspirado profundo</li>
+          <li>Cera protectora</li>
+        </ul>
+        <p>RD$ 1,200</p>
+        <button onclick="abrirAgenda()">Agendar</button>
+      `;
+    }
+
+    detalle.classList.remove("hidden");
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  }
+
+  function abrirAgenda() {
+    document.getElementById("agenda").classList.remove("hidden");
+    document.getElementById("tituloServicio").innerText = servicio;
+    generarFechas();
   }
 
   function generarFechas() {
@@ -164,11 +201,6 @@
   function reservar() {
     let hora = document.getElementById("hora").value;
 
-    if (!servicio) {
-      alert("Selecciona un servicio primero");
-      return;
-    }
-
     if (!fechaSeleccionada) {
       alert("Selecciona una fecha");
       return;
@@ -193,8 +225,6 @@
 
     actualizarHoras();
   }
-
-  generarFechas();
 </script>
 
 </body>
